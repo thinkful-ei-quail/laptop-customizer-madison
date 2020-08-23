@@ -1,30 +1,12 @@
 import React, { Component } from 'react';
-import Header from './Header.js';
-import Summary from './Summary.js';
-import Features from './Features/Features.js';
-import GrandTotal from './GrandTotal.js';
+import Selected from './Selected';
 import './App.css';
+import Cart from './Cart';
+import Customize from './Customize';
 
 class App extends Component {
   state = {
-    selected: {
-      Processor: {
-        name: '17th Generation Intel Core HB (7 Core with donut spare)',
-        cost: 700
-      },
-      'Operating System': {
-        name: 'Ubuntu Linux 16.04',
-        cost: 200
-      },
-      'Video Card': {
-        name: 'Toyota Corolla 1.5v',
-        cost: 1150.98
-      },
-      Display: {
-        name: '15.6" UHD (3840 x 2160) 60Hz Bright Lights and Knobs',
-        cost: 1500
-      }
-    }
+    selected: Selected
   };
 
   updateFeature = (feature, newValue) => {
@@ -35,47 +17,25 @@ class App extends Component {
     });
   };
 
-  USCurrencyFormat = new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD'
-  });
-  
   render() {
-    const total = Object.keys(this.state.selected).reduce(
-      (acc, curr) => acc + this.state.selected[curr].cost,
-      0
-    );
-    
+    const {selected} = this.state
     return (
       <div className="App">
-        <Header />
+        <header>
+          <h1>ELF Computing | Laptops</h1>
+        </header>
         <main>
-          <form className="main__form">
-            <h2>Customize your laptop</h2>
-            <Features 
-            features = {this.props.features}
-            USCurrencyFormat = {this.USCurrencyFormat}
-            state = {this.state}
-            updateFeature = {this.updateFeature}
-            />
-          </form>
-          <section className="main__summary">
-            <h2>Your cart</h2>
-            <Summary 
-            USCurrencyFormat = {this.USCurrencyFormat}
-            state = {this.state}
-            />
-            <GrandTotal 
-            total = {total}
-            USCurrencyFormat = {this.USCurrencyFormat}
-            />
-          </section>
+          <Customize 
+            selected={selected}
+            updateFeature={this.updateFeature}
+          />
+          <Cart 
+            selected={selected}
+          />
         </main>
       </div>
     );
   }
 }
-
-
 
 export default App;
